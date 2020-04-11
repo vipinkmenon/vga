@@ -207,7 +207,7 @@ proc cr_bd_vgaSystem { parentCell } {
      set list_check_ips "\ 
   xilinx.com:ip:smartconnect:1.0\
   xilinx.com:ip:axi_vdma:6.3\
-  xilinx.com:ip:clk_wiz:6.0\
+  xilinx.com:ip:clk_wiz:5.4\
   xilinx.com:ip:processing_system7:5.5\
   xilinx.com:ip:proc_sys_reset:5.0\
   xilinx.com:ip:v_axi4s_vid_out:4.0\
@@ -319,7 +319,7 @@ proc cr_bd_vgaSystem { parentCell } {
  ] $axi_vdma_0
 
   # Create instance: clk_wiz_0, and set properties
-  set clk_wiz_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 clk_wiz_0 ]
+  set clk_wiz_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:5.4 clk_wiz_0 ]
   set_property -dict [ list \
    CONFIG.CLKOUT1_JITTER {217.614} \
    CONFIG.CLKOUT1_PHASE_ERROR {245.344} \
