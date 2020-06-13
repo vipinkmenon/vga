@@ -203,17 +203,40 @@ proc cr_bd_vgaSystem { parentCell } {
   # CHECK IPs
   ##################################################################
   set bCheckIPs 1
+  
+  variable smartconnect
+  variable axi_vdma
+  variable clk_wiz
+  variable processing_system7
+  variable proc_sys_reset
+  variable v_axi4s_vid_out
+  variable v_tc
+  variable xlconstant
+  variable xlslice
+  
+  set smartconnect [get_ipdefs -filter {NAME == smartconnect}]
+  set axi_vdma [get_ipdefs -filter {NAME == axi_vdma}]
+  set clk_wiz [get_ipdefs -filter {NAME == clk_wiz}]
+  set processing_system7 [get_ipdefs -filter {NAME == processing_system7}]
+  set proc_sys_reset [get_ipdefs -filter {NAME == proc_sys_reset}]
+  set v_axi4s_vid_out [get_ipdefs -filter {NAME == v_axi4s_vid_out}]
+  set v_tc [get_ipdefs -filter {NAME == v_tc}]
+  set xlconstant [get_ipdefs -filter {NAME == xlconstant}]
+  set xlslice [get_ipdefs -filter {NAME == xlslice}]
+
+  
+  
   if { $bCheckIPs == 1 } {
      set list_check_ips "\ 
-  xilinx.com:ip:smartconnect:1.0\
-  xilinx.com:ip:axi_vdma:6.3\
-  xilinx.com:ip:clk_wiz:5.4\
-  xilinx.com:ip:processing_system7:5.5\
-  xilinx.com:ip:proc_sys_reset:5.0\
-  xilinx.com:ip:v_axi4s_vid_out:4.0\
-  xilinx.com:ip:v_tc:6.1\
-  xilinx.com:ip:xlconstant:1.1\
-  xilinx.com:ip:xlslice:1.0\
+    $smartconnect\
+    $axi_vdma\
+    $clk_wiz\
+    $processing_system7\
+    $proc_sys_reset\
+    $v_axi4s_vid_out\
+    $v_tc\
+    $xlconstant\
+    $xlslice\
   "
 
    set list_ips_missing ""
@@ -302,13 +325,13 @@ proc cr_bd_vgaSystem { parentCell } {
   set vid_vsync_0 [ create_bd_port -dir O vid_vsync_0 ]
 
   # Create instance: axi_smc, and set properties
-  set axi_smc [ create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 axi_smc ]
+  set axi_smc [ create_bd_cell -type ip -vlnv $smartconnect axi_smc ]
   set_property -dict [ list \
    CONFIG.NUM_SI {1} \
  ] $axi_smc
 
   # Create instance: axi_vdma_0, and set properties
-  set axi_vdma_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_vdma:6.3 axi_vdma_0 ]
+  set axi_vdma_0 [ create_bd_cell -type ip -vlnv $axi_vdma axi_vdma_0 ]
   set_property -dict [ list \
    CONFIG.c_include_mm2s_dre {1} \
    CONFIG.c_include_s2mm {0} \
@@ -319,7 +342,7 @@ proc cr_bd_vgaSystem { parentCell } {
  ] $axi_vdma_0
 
   # Create instance: clk_wiz_0, and set properties
-  set clk_wiz_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:5.4 clk_wiz_0 ]
+  set clk_wiz_0 [ create_bd_cell -type ip -vlnv $clk_wiz clk_wiz_0 ]
   set_property -dict [ list \
    CONFIG.CLKOUT1_JITTER {217.614} \
    CONFIG.CLKOUT1_PHASE_ERROR {245.344} \
@@ -345,7 +368,7 @@ proc cr_bd_vgaSystem { parentCell } {
    }
   
   # Create instance: processing_system7_0, and set properties
-  set processing_system7_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_system7_0 ]
+  set processing_system7_0 [ create_bd_cell -type ip -vlnv $processing_system7 processing_system7_0 ]
   set_property -dict [ list \
    CONFIG.PCW_ACT_APU_PERIPHERAL_FREQMHZ {666.666687} \
    CONFIG.PCW_ACT_CAN_PERIPHERAL_FREQMHZ {10.000000} \
@@ -749,13 +772,13 @@ proc cr_bd_vgaSystem { parentCell } {
  ] $ps7_0_axi_periph
 
   # Create instance: rst_clk_wiz_0_148M, and set properties
-  set rst_clk_wiz_0_148M [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_clk_wiz_0_148M ]
+  set rst_clk_wiz_0_148M [ create_bd_cell -type ip -vlnv $proc_sys_reset rst_clk_wiz_0_148M ]
 
   # Create instance: v_axi4s_vid_out_0, and set properties
-  set v_axi4s_vid_out_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_axi4s_vid_out:4.0 v_axi4s_vid_out_0 ]
+  set v_axi4s_vid_out_0 [ create_bd_cell -type ip -vlnv $v_axi4s_vid_out v_axi4s_vid_out_0 ]
 
   # Create instance: v_tc_0, and set properties
-  set v_tc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_tc:6.1 v_tc_0 ]
+  set v_tc_0 [ create_bd_cell -type ip -vlnv $v_tc v_tc_0 ]
   set_property -dict [ list \
    CONFIG.GEN_F0_VBLANK_HEND {1920} \
    CONFIG.GEN_F0_VBLANK_HSTART {1920} \
@@ -782,10 +805,10 @@ proc cr_bd_vgaSystem { parentCell } {
  ] $v_tc_0
 
   # Create instance: xlconstant_0, and set properties
-  set xlconstant_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 xlconstant_0 ]
+  set xlconstant_0 [ create_bd_cell -type ip -vlnv $xlconstant xlconstant_0 ]
 
   # Create instance: xlslice_0, and set properties
-  set xlslice_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 xlslice_0 ]
+  set xlslice_0 [ create_bd_cell -type ip -vlnv $xlslice xlslice_0 ]
   set_property -dict [ list \
    CONFIG.DIN_FROM {3} \
    CONFIG.DIN_TO {0} \
@@ -794,7 +817,7 @@ proc cr_bd_vgaSystem { parentCell } {
  ] $xlslice_0
 
   # Create instance: xlslice_1, and set properties
-  set xlslice_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 xlslice_1 ]
+  set xlslice_1 [ create_bd_cell -type ip -vlnv $xlslice xlslice_1 ]
   set_property -dict [ list \
    CONFIG.DIN_FROM {11} \
    CONFIG.DIN_TO {8} \
@@ -803,7 +826,7 @@ proc cr_bd_vgaSystem { parentCell } {
  ] $xlslice_1
 
   # Create instance: xlslice_2, and set properties
-  set xlslice_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 xlslice_2 ]
+  set xlslice_2 [ create_bd_cell -type ip -vlnv $xlslice xlslice_2 ]
   set_property -dict [ list \
    CONFIG.DIN_FROM {19} \
    CONFIG.DIN_TO {16} \
